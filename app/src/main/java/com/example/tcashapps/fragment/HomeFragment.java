@@ -1,7 +1,6 @@
 package com.example.tcashapps.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,10 +13,9 @@ import android.view.ViewGroup;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.example.tcashapps.adapter.BlogAdapter;
-import com.example.tcashapps.activity.DetailBlogActivity;
-import com.example.tcashapps.activity.MainActivity;
 import com.example.tcashapps.R;
+import com.example.tcashapps.activity.MainActivity;
+import com.example.tcashapps.adapter.BlogAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +92,12 @@ public class HomeFragment extends Fragment {
         adapterBlog.setOnItemClickListener(new BlogAdapter.onClikListener() {
             @Override
             public void onClickItem() {
-                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class));
+//                Bundle bundle = new Bundle();
+//                bundle.putString(TITLE, title);
+//                bundle.putString(URL, url);
+//                bundle.putString(COVER, cover);
+//                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtras(bundle));
+//                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class));
             }
         });
 

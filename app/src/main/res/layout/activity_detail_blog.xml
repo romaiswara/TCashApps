@@ -50,14 +50,16 @@
                         android:layout_height="wrap_content"
                         android:text="LOVE BLOG"
                         android:textColor="@android:color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Top 10 Recommended"
                         android:textColor="@android:color/white"
-                        android:textSize="18dp" />
+                        android:textSize="18dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </RelativeLayout>

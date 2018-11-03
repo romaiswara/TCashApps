@@ -5,47 +5,72 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tcashapps.R;
+import com.example.tcashapps.fragment.BlogFragment;
+import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailBlogActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
+    @BindView(R.id.mainWebView)
+    WebView webView;
+    @BindView(R.id.mainIdTitle)
+    TextView mainIdTitle;
+    @BindView(R.id.backdrop)
+    ImageView backDrop;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_blog);
 
+        ButterKnife.bind(this);
+
         progressDialog = new ProgressDialog(DetailBlogActivity.this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        String url = getIntent().getStringExtra("url");
-        Log.d("TEST", "onCreate: "+url);
+        Bundle bundle = getIntent().getExtras();
 
-//        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"315\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String url = bundle.getString(BlogFragment.URL);
+        String title = bundle.getString(BlogFragment.TITLE);
+        String cover = bundle.getString(BlogFragment.COVER);
 
-        String frameVideo = "<html><body>Youtube video .. <br> <iframe width='320' height='315' src='https://www.youtube.com/embed/lY2H2ZP56K4?autoplay=1' frameborder='0' allowfullscreen></iframe></body></html>";
+        Picasso.with(this).load(cover).into(backDrop);
 
-        String html = "<iframe class=\"youtube-player\" style=\"border: 0; width: 100%; height: 95%; padding:0px; margin:0px\" id=\"ytplayer\" type=\"text/html\" src=\"http://www.youtube.com/embed/"
-                + "lY2H2ZP56K4?autoplay=1"
-                + "&fs=0\" frameborder=\"0\">\n"
-                + "</iframe>\n";
+        mainIdTitle.setText(String.format("%s", title));
 
-        String url1 = "<html><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\"><meta name=\"HandheldFriendly\" content=\"true\"><body><iframe width='320' height='315 src=\\\"http://45.32.105.117:9876/files/5bdc85b4509acc71ee5f11ec\\\" frameborder=\\\"1\\\" allow=\\\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen></iframe></body></html>";
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
 
-        WebView webView = new WebView(this);
-        setContentView(webView);
-//        webView.loadUrl("https://stackoverflow.com/");
-//        webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+        webView.setLongClickable(false);
+        webView.setHapticFeedbackEnabled(false);
+        webView.getSettings().setJavaScriptEnabled(false);
+        webView.getSettings().setUseWideViewPort(false);
+        webView.getSettings().setLoadWithOverviewMode(true);
         webView.loadData(url, "text/html; charset=utf-8", "UTF-8");
-//        webView.loadData(""+Html.fromHtml(url), "text/html", "UTF-8");
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+//        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
 
         webView.setWebViewClient(new WebViewClient(){
             @Override

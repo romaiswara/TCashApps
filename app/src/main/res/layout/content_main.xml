@@ -13,28 +13,24 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/mainIdTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Judul Blog"
-            android:textSize="36sp"
             android:layout_margin="16dp"
-            android:fontFamily="sans-serif-light"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif-light"
-            android:text="@string/deskripsi"/>
-
-        <TextView
+            android:text="Judul Blog"
+            android:textSize="36sp" />
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/deskripsi"/>
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/mainWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -48,6 +48,12 @@ public class BlogFragment extends Fragment {
     ContentViewModel contentViewModel;
 
     private String url;
+    private String title;
+    private String cover;
+
+    public static String URL = "URL_";
+    public static String TITLE = "_TITLE";
+    public static String COVER = "_COVER";
 
     public BlogFragment() {
         // Required empty public constructor
@@ -82,9 +88,10 @@ public class BlogFragment extends Fragment {
                 if (response.code() == 200){
                     contentViewModel.deleteAllContens();
                     for (int i=0; i<response.body().getMessage().size(); i++){
-                        Log.d(TAG, "Blog onResponse: sukses");
                         Content c = response.body().getMessage().get(i);
                         url = c.getContent();
+                        cover = c.getThumbnails();
+                        title = c.getTitle();
                         contentViewModel.insert(c);
                     }
                     initRecylerview();
@@ -107,7 +114,11 @@ public class BlogFragment extends Fragment {
         adapter.setOnItemClickListener(new BlogAdapter.onClikListener() {
             @Override
             public void onClickItem() {
-                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtra("url", url));
+                Bundle bundle = new Bundle();
+                bundle.putString(TITLE, title);
+                bundle.putString(URL, url);
+                bundle.putString(COVER, cover);
+                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtras(bundle));
 //                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://stackoverflow.com/")));
             }
         });

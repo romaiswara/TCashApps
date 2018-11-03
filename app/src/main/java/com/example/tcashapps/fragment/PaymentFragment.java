@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tcashapps.adapter.MenuAdapter;
 import com.example.tcashapps.R;
+import com.example.tcashapps.adapter.MenuAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

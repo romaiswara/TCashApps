@@ -1,11 +1,10 @@
 package com.example.tcashapps.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import com.example.tcashapps.Constant;
 import com.example.tcashapps.R;
 import com.example.tcashapps.SessionManagement;
 

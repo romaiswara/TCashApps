@@ -9,22 +9,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.tcashapps.R;
 import com.example.tcashapps.activity.DetailBlogActivity;
 import com.example.tcashapps.adapter.VideoAdapter;
-import com.example.tcashapps.R;
 import com.example.tcashapps.model.retrofit.APIClient;
 import com.example.tcashapps.model.retrofit.APIService;
 import com.example.tcashapps.model.retrofit.Content;
 import com.example.tcashapps.model.retrofit.ContentResponse;
 import com.example.tcashapps.model.room.ContentViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +32,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.support.constraint.Constraints.TAG;
 import static com.example.tcashapps.fragment.BlogFragment.COVER;
 import static com.example.tcashapps.fragment.BlogFragment.TITLE;
 import static com.example.tcashapps.fragment.BlogFragment.URL;

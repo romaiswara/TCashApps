@@ -4,6 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface APIService {
@@ -17,8 +18,7 @@ public interface APIService {
     Call<Login> registerUser(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("phone") String phone);
 
     @GET("me")
-    @FormUrlEncoded
-    Call<User> myProfile(@Field("token") String token);
+    Call<UserResponse> myProfile(@Header("access-token") String token);
 
     @GET("blog/blog")
     Call<ContentResponse> getBlog();

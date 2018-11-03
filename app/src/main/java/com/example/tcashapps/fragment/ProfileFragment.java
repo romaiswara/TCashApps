@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.tcashapps.activity.LoginActivity;
 import com.example.tcashapps.model.retrofit.APIClient;
 import com.example.tcashapps.model.retrofit.APIService;
 import com.example.tcashapps.model.retrofit.User;
+import com.example.tcashapps.model.retrofit.UserResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,22 +63,18 @@ public class ProfileFragment extends Fragment {
 
         sessionManagement = new SessionManagement(getActivity());
         apiService = APIClient.getClient().create(APIService.class);
-
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(String.valueOf("R"), Color.RED);
-        imageView.setImageDrawable(drawable);
-//        loadData();
+        loadData();
 
         return view;
     }
 
     private void loadData(){
-        Call<User> call = apiService.myProfile(sessionManagement.getToken());
-        call.enqueue(new Callback<User>() {
+        Call<UserResponse> call = apiService.myProfile(sessionManagement.getToken());
+        call.enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200){
-                    User user = response.body();
+                    User user = response.body().getUser();
                     TextDrawable drawable = TextDrawable.builder()
                             .buildRound(String.valueOf(user.getName().charAt(0)), Color.RED);
                     imageView.setImageDrawable(drawable);
@@ -89,7 +87,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
 
             }
         });

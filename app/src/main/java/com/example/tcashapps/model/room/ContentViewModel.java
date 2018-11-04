@@ -35,6 +35,14 @@ public class ContentViewModel extends AndroidViewModel {
         repository.deleteAllContents();
     }
 
+    public void deleteAllBlog(){
+        repository.deleteAllBlog();
+    }
+
+    public void deleteAllVideo(){
+        repository.deleteAllVideo();
+    }
+
     public LiveData<List<Content>> getAllContents(){
         return allContents;
     }
@@ -45,6 +53,14 @@ public class ContentViewModel extends AndroidViewModel {
 
     public LiveData<List<Content>> getAllVideoContent(){
         return repository.getAllVideoContent();
+    }
+
+    public LiveData<List<Content>> get3BlogContent(){
+        return repository.get3BlogContent();
+    }
+
+    public LiveData<List<Content>> get3VideoContent(){
+        return repository.get3VideoContent();
     }
 
     public LiveData<List<Content>> getDetailContent(String id){

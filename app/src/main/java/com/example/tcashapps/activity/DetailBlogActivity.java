@@ -3,6 +3,7 @@ package com.example.tcashapps.activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,6 +26,8 @@ public class DetailBlogActivity extends AppCompatActivity {
     TextView mainIdTitle;
     @BindView(R.id.backdrop)
     ImageView backDrop;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
     @Override
@@ -47,6 +50,8 @@ public class DetailBlogActivity extends AppCompatActivity {
         Picasso.with(this).load(cover).into(backDrop);
 
         mainIdTitle.setText(String.format("%s", title));
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
 
         webView.setWebViewClient(new WebViewClient(){
             @Override

@@ -34,6 +34,14 @@ public class ContentRepository {
         new DeleteAllContentAsynTask(contentDAO).execute();
     }
 
+    public void deleteAllBlog(){
+        new DeleteAllBlogContentAsynTask(contentDAO).execute();
+    }
+
+    public void deleteAllVideo(){
+        new DeleteAllVideoContentAsynTask(contentDAO).execute();
+    }
+
     public LiveData<List<Content>> getAllContents(){
         return allContent;
     }
@@ -44,6 +52,14 @@ public class ContentRepository {
 
     public LiveData<List<Content>> getAllVideoContent(){
         return contentDAO.getAllVideo();
+    }
+
+    public LiveData<List<Content>> get3BlogContent(){
+        return contentDAO.get3Blog();
+    }
+
+    public LiveData<List<Content>> get3VideoContent(){
+        return contentDAO.get3Video();
     }
 
     public LiveData<List<Content>> getDetailContent(String id){
@@ -101,7 +117,35 @@ public class ContentRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            contentDAO.deleteAllNotes();
+            contentDAO.deleteAllContent();
+            return null;
+        }
+    }
+
+    private static class DeleteAllBlogContentAsynTask extends AsyncTask<Void, Void, Void>{
+        private ContentDAO contentDAO;
+
+        public DeleteAllBlogContentAsynTask(ContentDAO contentDAO) {
+            this.contentDAO = contentDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            contentDAO.deleteAllBlog();
+            return null;
+        }
+    }
+
+    private static class DeleteAllVideoContentAsynTask extends AsyncTask<Void, Void, Void>{
+        private ContentDAO contentDAO;
+
+        public DeleteAllVideoContentAsynTask(ContentDAO contentDAO) {
+            this.contentDAO = contentDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            contentDAO.deleteAllVideo();
             return null;
         }
     }

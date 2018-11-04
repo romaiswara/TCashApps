@@ -48,6 +48,7 @@
                 android:text="Judul nya ini panjang maksimal 2 baris"
                 android:fontFamily="sans-serif-light"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="11sp"
                 android:textStyle="bold"
                 android:maxLines="2"/>
 
@@ -58,6 +59,7 @@
                 android:text="Sumbernya"
                 android:fontFamily="sans-serif-light"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textSize="8sp"
                 android:layout_marginTop="8dp"/>
 
         </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.tcashapps.fragment;
 
 
+import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -41,9 +42,7 @@ public class BlogFragment extends Fragment {
     BlogAdapter adapter;
     ContentViewModel contentViewModel;
 
-    private String url;
-    private String title;
-    private String cover;
+    ProgressDialog progressDialog;
 
     public static String URL = "URL_";
     public static String TITLE = "_TITLE";
@@ -75,26 +74,29 @@ public class BlogFragment extends Fragment {
     }
 
     private void loadData(){
+        progressDialog();
         Call<ContentResponse> call = apiService.getBlog();
         call.enqueue(new Callback<ContentResponse>() {
             @Override
             public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
                 if (response.code() == 200){
-                    contentViewModel.deleteAllContens();
+                    contentViewModel.deleteAllBlog();
                     for (int i=0; i<response.body().getMessage().size(); i++){
                         Content c = response.body().getMessage().get(i);
-                        url = c.getContent();
-                        cover = c.getThumbnails();
-                        title = c.getTitle();
                         contentViewModel.insert(c);
                     }
                     initRecylerview();
+                }
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ContentResponse> call, Throwable t) {
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         });
     }
@@ -107,15 +109,20 @@ public class BlogFragment extends Fragment {
 
         adapter.setOnItemClickListener(new BlogAdapter.onClikListener() {
             @Override
-            public void onClickItem() {
+            public void onClickItem(Content content) {
                 Bundle bundle = new Bundle();
-                bundle.putString(TITLE, title);
-                bundle.putString(URL, url);
-                bundle.putString(COVER, cover);
+                bundle.putString(TITLE, content.getTitle());
+                bundle.putString(URL, content.getContent());
+                bundle.putString(COVER, content.getThumbnails());
                 getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtras(bundle));
 //                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://stackoverflow.com/")));
             }
         });
     }
 
+    private void progressDialog(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+    }
 }

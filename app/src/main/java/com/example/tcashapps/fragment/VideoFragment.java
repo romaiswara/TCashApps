@@ -1,6 +1,7 @@
 package com.example.tcashapps.fragment;
 
 
+import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -45,14 +46,13 @@ public class VideoFragment extends Fragment {
     @BindView(R.id.btnDeleteAll)
     Button btnDeleteAll;
 
+    ProgressDialog progressDialog;
+
     APIService apiService;
 //    List<Content> list = new ArrayList<>();
 
     VideoAdapter adapter;
     ContentViewModel contentViewModel;
-    private String url;
-    private String title;
-    private String cover;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -82,27 +82,29 @@ public class VideoFragment extends Fragment {
     }
 
     private void loadData(){
+        progressDialog();
         Call<ContentResponse> call = apiService.getVideo();
         call.enqueue(new Callback<ContentResponse>() {
             @Override
             public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
                 if (response.code() == 200){
-                    contentViewModel.deleteAllContens();
+                    contentViewModel.deleteAllVideo();
                     for (int i=0; i<response.body().getMessage().size(); i++){
                         Content c = response.body().getMessage().get(i);
-                        url = c.getContent();
-                        cover = c.getThumbnails();
-                        title = c.getTitle();
                         contentViewModel.insert(c);
                     }
-
                     initRecylerview();
+                }
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ContentResponse> call, Throwable t) {
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         });
     }
@@ -121,13 +123,12 @@ public class VideoFragment extends Fragment {
 
         adapter.setOnItemClickListener(new VideoAdapter.onClikListener() {
             @Override
-            public void onClickItem() {
+            public void onClickItem(Content content) {
                 Bundle bundle = new Bundle();
-                bundle.putString(TITLE, title);
-                bundle.putString(URL, url);
-                bundle.putString(COVER, cover);
+                bundle.putString(TITLE, content.getTitle());
+                bundle.putString(URL, content.getContent());
+                bundle.putString(COVER, content.getThumbnails());
                 getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtras(bundle));
-//                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtra("url", url));
             }
         });
 
@@ -136,6 +137,12 @@ public class VideoFragment extends Fragment {
     @OnClick(R.id.btnDeleteAll)
     public void deleteAll(){
         contentViewModel.deleteAllContens();
+    }
+
+    private void progressDialog(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
     }
 
 }

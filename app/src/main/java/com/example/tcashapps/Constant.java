@@ -6,4 +6,7 @@ public class Constant {
 //    public static final String BASE_URL = "http://192.168.1.74:9876/";
 
     public static final String TOKEN = "TOKEN";
+
+    public static final String BLOG = "BLOG";
+    public static final String VIDEO = "VIDEO";
 }

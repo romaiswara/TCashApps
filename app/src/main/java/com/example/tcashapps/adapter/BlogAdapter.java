@@ -56,7 +56,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         if (stts == 0) {
-            return 12;
+            return 3;
         } else {
             return blog.size();
         }
@@ -82,26 +82,27 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindItem(final Content content){
+            tvTitle.setText(content.getTitle());
+            tvDeskripsi.setText(content.getDescription());
+            Picasso.with(context).load(content.getThumbnails()).into(ivBlog);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener!=null && position != RecyclerView.NO_POSITION) {
-                        listener.onClickItem();
+                        listener.onClickItem(content);
                     }
                 }
             });
         }
-
-        public void bindItem(Content content){
-            tvTitle.setText(content.getTitle());
-            tvDeskripsi.setText(content.getDescription());
-            Picasso.with(context).load(content.getThumbnails()).into(ivBlog);
-        }
     }
 
     public interface onClikListener{
-        void onClickItem();
+        void onClickItem(Content content);
     }
     public void setOnItemClickListener(onClikListener listener){
         this.listener = listener;

@@ -1,5 +1,7 @@
 package com.example.tcashapps.activity;
 
+import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +18,15 @@ import com.example.tcashapps.fragment.HomeFragment;
 import com.example.tcashapps.fragment.PaymentFragment;
 import com.example.tcashapps.fragment.ProfileFragment;
 import com.example.tcashapps.fragment.VideoFragment;
+import com.example.tcashapps.model.retrofit.APIClient;
+import com.example.tcashapps.model.retrofit.APIService;
+import com.example.tcashapps.model.retrofit.Content;
+import com.example.tcashapps.model.retrofit.ContentResponse;
+import com.example.tcashapps.model.room.ContentViewModel;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -26,11 +37,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private static final String TAG = "MainActivity";
 
     SessionManagement sessionManagement;
+    APIService apiService;
+    ContentViewModel contentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        apiService = APIClient.getClient().create(APIService.class);
+        contentViewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
+
+        loadBlogData();
+        loadVideoData();
 
         addFragment(new HomeFragment());
 
@@ -96,5 +115,45 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: cekToken "+sessionManagement.getToken());
+    }
+
+    private void loadBlogData(){
+        Call<ContentResponse> call = apiService.getBlog();
+        call.enqueue(new Callback<ContentResponse>() {
+            @Override
+            public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
+                if (response.code() == 200){
+                    contentViewModel.deleteAllBlog();
+                    for (int i=0; i<response.body().getMessage().size(); i++){
+                        Content c = response.body().getMessage().get(i);
+                        contentViewModel.insert(c);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ContentResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    private void loadVideoData(){
+        Call<ContentResponse> call = apiService.getVideo();
+        call.enqueue(new Callback<ContentResponse>() {
+            @Override
+            public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
+                if (response.code() == 200){
+                    contentViewModel.deleteAllVideo();
+                    for (int i=0; i<response.body().getMessage().size(); i++){
+                        Content c = response.body().getMessage().get(i);
+                        contentViewModel.insert(c);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ContentResponse> call, Throwable t) {
+            }
+        });
     }
 }

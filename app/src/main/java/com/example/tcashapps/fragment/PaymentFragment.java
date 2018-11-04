@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tcashapps.R;
 import com.example.tcashapps.adapter.MenuAdapter;
@@ -44,7 +45,20 @@ public class PaymentFragment extends Fragment {
         rvMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         rvMenu.setHasFixedSize(true);
         rvMenu.setAdapter(adapter);
+
+        adapter.setMenuListener(new MenuAdapter.onClickMenuListener() {
+            @Override
+            public void onClickMenu(int pos) {
+                menuItem(pos);
+            }
+        });
+
         return view;
+    }
+
+    private void menuItem(int pos){
+        int a = pos+1;
+        Toast.makeText(getContext(), "Menu "+a, Toast.LENGTH_SHORT).show();
     }
 
 }

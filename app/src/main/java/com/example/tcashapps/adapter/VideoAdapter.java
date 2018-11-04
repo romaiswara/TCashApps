@@ -72,6 +72,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public List<Content> getContent() {
+        return content;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.tvTitle)
         TextView tvTitle;
@@ -109,6 +113,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     public interface onClikListener{
         void onClickItem(Content content);
     }
+
     public void setOnItemClickListener(onClikListener listener){
         this.listener = listener;
     }

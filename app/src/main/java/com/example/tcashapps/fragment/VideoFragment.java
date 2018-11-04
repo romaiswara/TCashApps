@@ -9,22 +9,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.tcashapps.R;
 import com.example.tcashapps.activity.DetailBlogActivity;
 import com.example.tcashapps.adapter.VideoAdapter;
-import com.example.tcashapps.R;
 import com.example.tcashapps.model.retrofit.APIClient;
 import com.example.tcashapps.model.retrofit.APIService;
 import com.example.tcashapps.model.retrofit.Content;
 import com.example.tcashapps.model.retrofit.ContentResponse;
 import com.example.tcashapps.model.room.ContentViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +32,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.support.constraint.Constraints.TAG;
+import static com.example.tcashapps.fragment.BlogFragment.COVER;
+import static com.example.tcashapps.fragment.BlogFragment.TITLE;
+import static com.example.tcashapps.fragment.BlogFragment.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +50,9 @@ public class VideoFragment extends Fragment {
 
     VideoAdapter adapter;
     ContentViewModel contentViewModel;
-
     private String url;
+    private String title;
+    private String cover;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -88,16 +89,11 @@ public class VideoFragment extends Fragment {
                 if (response.code() == 200){
                     contentViewModel.deleteAllContens();
                     for (int i=0; i<response.body().getMessage().size(); i++){
-//                        list.add(response.body().getMessage().get(i));
-                        Log.d(TAG, "onResponse: sukses");
                         Content c = response.body().getMessage().get(i);
                         url = c.getContent();
+                        cover = c.getThumbnails();
+                        title = c.getTitle();
                         contentViewModel.insert(c);
-//                        if (contentViewModel.getDetailContent(c.getId()) == null){
-//                            contentViewModel.insert(c);
-//                        } else {
-//                            contentViewModel.update(c);
-//                        }
                     }
 
                     initRecylerview();
@@ -126,7 +122,12 @@ public class VideoFragment extends Fragment {
         adapter.setOnItemClickListener(new VideoAdapter.onClikListener() {
             @Override
             public void onClickItem() {
-                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtra("url", url));
+                Bundle bundle = new Bundle();
+                bundle.putString(TITLE, title);
+                bundle.putString(URL, url);
+                bundle.putString(COVER, cover);
+                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtras(bundle));
+//                getActivity().startActivity(new Intent(getActivity(), DetailBlogActivity.class).putExtra("url", url));
             }
         });
 

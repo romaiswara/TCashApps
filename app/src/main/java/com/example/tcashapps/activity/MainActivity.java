@@ -1,15 +1,14 @@
 package com.example.tcashapps.activity;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import com.example.tcashapps.Constant;
 import com.example.tcashapps.R;
 import com.example.tcashapps.SessionManagement;
 import com.example.tcashapps.fragment.BlogFragment;

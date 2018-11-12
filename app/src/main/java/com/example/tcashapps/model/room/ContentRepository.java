@@ -62,7 +62,7 @@ public class ContentRepository {
         return contentDAO.get3Video();
     }
 
-    public LiveData<List<Content>> getDetailContent(String id){
+    public Content getDetailContent(String id){
         return contentDAO.getDetailContent(id);
     }
 

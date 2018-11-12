@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.example.tcashapps.model.retrofit.APIService;
 import com.example.tcashapps.model.retrofit.Content;
 import com.example.tcashapps.model.retrofit.ContentResponse;
 import com.example.tcashapps.model.room.ContentViewModel;
+import com.example.tcashapps.service.DataService;
 
 import java.util.List;
 
@@ -37,6 +39,8 @@ import retrofit2.Response;
 public class BlogFragment extends Fragment {
     @BindView(R.id.rvBlog)
     RecyclerView rvBlog;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout refreshLayout;
 
     APIService apiService;
     BlogAdapter adapter;
@@ -69,36 +73,45 @@ public class BlogFragment extends Fragment {
                 adapter.setContent(contents);
             }
         });
-        loadData();
+//        loadData();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getActivity().startService(new Intent(getActivity(), DataService.class));
+                refreshLayout.setRefreshing(false);
+            }
+        });
         return view;
     }
 
     private void loadData(){
-        progressDialog();
-        Call<ContentResponse> call = apiService.getBlog();
-        call.enqueue(new Callback<ContentResponse>() {
-            @Override
-            public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
-                if (response.code() == 200){
-                    contentViewModel.deleteAllBlog();
-                    for (int i=0; i<response.body().getMessage().size(); i++){
-                        Content c = response.body().getMessage().get(i);
-                        contentViewModel.insert(c);
-                    }
-                    initRecylerview();
-                }
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ContentResponse> call, Throwable t) {
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-        });
+        contentViewModel.getAllBlogContent();
+        initRecylerview();
+//        progressDialog();
+//        Call<ContentResponse> call = apiService.getBlog();
+//        call.enqueue(new Callback<ContentResponse>() {
+//            @Override
+//            public void onResponse(Call<ContentResponse> call, Response<ContentResponse> response) {
+//                if (response.code() == 200){
+//                    contentViewModel.deleteAllBlog();
+//                    for (int i=0; i<response.body().getMessage().size(); i++){
+//                        Content c = response.body().getMessage().get(i);
+//                        contentViewModel.insert(c);
+//                    }
+//                    initRecylerview();
+//                }
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ContentResponse> call, Throwable t) {
+//                if (progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
+//            }
+//        });
     }
 
     private void initRecylerview(){

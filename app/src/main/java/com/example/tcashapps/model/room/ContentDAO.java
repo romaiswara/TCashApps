@@ -11,9 +11,11 @@ import com.example.tcashapps.model.retrofit.Content;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface ContentDAO {
-    @Insert
+    @Insert(onConflict = REPLACE)
     void insert(Content content);
 
     @Update
@@ -47,5 +49,5 @@ public interface ContentDAO {
     LiveData<List<Content>> get3Video();
 
     @Query("SELECT * FROM content_table WHERE id_content LIKE :idContent")
-    LiveData<List<Content>> getDetailContent(String idContent);
+    Content getDetailContent(String idContent);
 }

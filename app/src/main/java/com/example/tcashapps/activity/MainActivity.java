@@ -2,6 +2,7 @@ package com.example.tcashapps.activity;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,6 +24,7 @@ import com.example.tcashapps.model.retrofit.APIService;
 import com.example.tcashapps.model.retrofit.Content;
 import com.example.tcashapps.model.retrofit.ContentResponse;
 import com.example.tcashapps.model.room.ContentViewModel;
+import com.example.tcashapps.service.DataService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private FrameLayout frameLayout;
     private Fragment fragment;
     private BottomNavigationView navigation;
+    Intent iService;
 
     private static final String TAG = "MainActivity";
 
@@ -48,8 +51,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         apiService = APIClient.getClient().create(APIService.class);
         contentViewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
 
-        loadBlogData();
-        loadVideoData();
+//        loadBlogData();
+//        loadVideoData();
+        iService = new Intent(this, DataService.class);
+        startService(iService);
 
         addFragment(new HomeFragment());
 
@@ -155,5 +160,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void onFailure(Call<ContentResponse> call, Throwable t) {
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(iService);
+        super.onDestroy();
     }
 }

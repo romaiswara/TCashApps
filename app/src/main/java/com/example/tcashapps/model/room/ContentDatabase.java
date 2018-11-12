@@ -20,7 +20,8 @@ public abstract class ContentDatabase extends RoomDatabase {
     public static synchronized ContentDatabase getInstance(Context context){
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(), ContentDatabase.class, "content_database")
-                    .fallbackToDestructiveMigration()
+//                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .addCallback(callback)
                     .build();
         }

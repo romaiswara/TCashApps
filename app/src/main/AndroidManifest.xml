@@ -24,6 +24,8 @@
         <activity android:name=".activity.DetailBlogActivity"
             android:hardwareAccelerated="true"/>
         <activity android:name=".activity.RegisterActivity" />
+
+        <service android:name=".service.DataService"/>
     </application>
 
 </manifest>

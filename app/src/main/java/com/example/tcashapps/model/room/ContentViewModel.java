@@ -63,7 +63,7 @@ public class ContentViewModel extends AndroidViewModel {
         return repository.get3VideoContent();
     }
 
-    public LiveData<List<Content>> getDetailContent(String id){
+    public Content getDetailContent(String id){
         return repository.getDetailContent(id);
     }
 
